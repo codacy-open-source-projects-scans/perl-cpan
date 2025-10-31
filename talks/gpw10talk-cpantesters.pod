@@ -1,0 +1,494 @@
+=encoding utf-8
+
+=head1 Hat das jemand getestet?
+
+Andreas König, DPW10, RRZE, Erlangen, 2008-02-13
+
+=head1 Der  Alltag eines CPAN Testers
+
+  21:45 < nadim> history | wc -l => 500
+  21:46 < nadim> history | grep test | wc -l => 375
+  21:46 < nadim> I have to get a life!
+
+=head1 Was ist ein CPAN Tester?
+
+=over
+
+=item * C<CPAN.pm> + C<CPAN::Reporter> + Konfiguration
+
+=item * C<o conf init /report/>
+
+=item * C<test Foo::Bar::Baz>
+
+Side effect reporting
+
+=item * C<report Foo::Bar::Baz>
+
+Casual reporting
+
+=item * C<CPAN::Reporter::Smoker>
+
+Von David Golden - Turnkey CPAN Testers smoking
+
+=back
+
+=head1 Konfigurieren
+
+=over
+
+CPAN::Reporter schreibt das Ergebnis der interaktiven Konfiguration in
+die Datei C<~/.cpanreporter/config.ini>. Im INI Format.
+
+  cc_author=ask/no
+  debug=1
+  edit_report=ask/no
+  editor=emacsclient
+  email_from=andreas.koenig.gmwojprw@franz.ak.mind.de
+  send_duplicates=ask/no
+  send_report=ask/no
+  smtp_server=localhost
+
+Seit 1.08 auch: C<cc_skipfile>, C<send_skipfile>
+
+=back
+
+=head1 Old school
+
+=over
+
+=item * CPANPLUS
+
+=item * CPAN::YACSmoke
+
+Der erste Smoker von Barbie.
+
+=item * POE::Component::CPAN::YACSmoke
+
+Hochleistungs-Smoker unter POE von Bingos (Chris Williams)
+
+=back
+
+=head1 Datentransport
+
+=over
+
+=item * Test::Reporter
+
+von beiden Systemen zur Einlieferung der Daten auf dem zentralen
+cpantesters Server verwendet. Von Adam J. Foxson
+
+=item * CPAN::Testers
+
+B<Kein> Modul, lediglich eine manpage, die die Datenflüsse darstellt
+
+=item * testers-over-http-upload
+
+Work in progress. Wird in Test::Reporter entsprechnd reflektiert werden.
+
+=back
+
+=head1 Datenpool
+
+=over
+
+=item * sammelt Daten über first hand experiences
+
+=back
+
+=head1 Warum teste ich?
+
+=over
+
+=item * um Bugs zu finden, bevor ich als Enduser auf sie treffe
+
+=item * in Modulen
+
+=item * in Perl
+
+=item * weil es Spaß macht
+
+=item * weil es dem Ruf unseres CPAN gut tut
+
+=item * weil es eine Menge dabei zu entdecken gibt
+
+=item * weil ich dabei den Autoren etwas zurückgeben kann
+
+Etwa Test::Harness durchtesten.
+
+=back
+
+=head1 Wann scheitert das Testen?
+
+=over
+
+=item * Wenn Entwickler und Tester nicht miteinander können
+
+=item * Ovid:
+
+I find it sad that so many companies have this tension between QA and
+developers and here we are seeing the EXACT same thing.
+
+http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/2008-01/msg00722.html
+
+In dem Thread, in dem Ovid das gesagt hat, sind Emotionen hochgekocht,
+die für mich schwer nachvollziehbar sind. Es kommt offensichtlich beim
+Aufeinandertreffen von göttlichen Entwicklern und dem undankbaren,
+stets nur auf seinen eigenen Vorteil bedachten, schmarotzendem Pöbel
+zu existenziellen Grundfragen.
+
+=back
+
+=head1 Wann scheitert das Testen außerdem?
+
+=over
+
+=item * Wenn Tester zu viele schlechte Reports abliefern
+
+Marc Lehmann ist das wohl passiert und er hat wohl einen Autoresponder
+für cpantesters eingerichtet, der gewisse Mails von cpantesters
+postwendend zurückschickt.
+
+=item * Andy Armstrong
+
+I'm locked in correspondence with Marc now.
+
+His view: cpan-testers are incompetent, ego tripping, quasi-religious  
+nuisances.
+
+=back
+
+=head1 Fehler im Testsystem
+
+=over
+
+=item * Traditionelle, manuelle Bugreports
+
+sind immer vorzuziehen, wenn man ein Problem analysiert hat und
+weiss, wovon man redet.
+
+=item * Automatisierte Testreports
+
+sind immer nur Daten und enthalten hoffentlich genug Hinweise über die
+Natur von PASSes und FAILs. Sie können anderen helfen, sich ein Bild
+zu machen, sie ersetzen aber nicht die Analyse.
+
+=back
+
+=head1 Kommunikationsgau
+
+=over
+
+Oft kommt es nicht vor. Aber man sollte damit rechnen.
+
+Wenn ein Tester kein Interesse an
+unseren Diensten hat, hands down. Ab in den Killfile.
+
+Wenn dann noch etwas offen ist, einen Patch schreiben, eine
+Distroprefs-Datei zu schreiben, höchstens eine kurze Notiz an den
+Autor.
+
+Wenn wir als Tester Autoren nerven, war alle Mühe vergeblich.
+
+=back
+
+=head1 Grenzfälle
+
+=over
+
+=item * Schlechte Tests sind relativ harmlos
+
+Tests, die Bugs anzeigen, wo keine sind oder die existierende Bugs
+nicht anzeigen, stellen nicht den Vorang des Testens in Frage. Es ist
+halt dann eine frage der Zet, bis jemand die schlechten Tests
+identifiziert.
+
+=back
+
+=head1 Grenzfälle II
+
+=over
+
+=item * Random Test Results
+
+Zusätzliche Buchführung kann manchmal helfen, zufällige Testergebnisse
+zu identifizieren. Wer immer wieder die gleichen Module testet,
+liefert über CPAN::Reporter immer höchstens einen PASS und eine FAIL
+pro perl Version ab. Wenn die Tests aber 150 PASS und 50 FAIL
+ergeben...
+
+http://rt.cpan.org/Ticket/Display.html?id=28122
+
+=item * Overeager Testing
+
+Es gibt Tests, die laufen zu lange. So what?
+
+=back
+
+=head1 Grenzfälle II
+
+=over
+
+=item * Hänger
+
+Es gibt Tests, die bleiben einfach stehen. Wer mit Bingo's POE Server
+arbeitet, kennt das Problem nicht. Andere müssen entscheiden, ob der
+Prozess auf Input wartet und entsprechend antworten, und dann später
+eine Distroprefs-Datei schreiben; oder ob sie die Distribution
+überspringen wollen und sie in einen Exclude-File aufnehmen.
+
+Environment Variable setzen: PERL_MM_USE_DEFAULT=1 und
+AUTOMATED_TESTING=1. Smoker machen das automatisch.
+
+=back
+
+=head1 Howto Use Your {Makefile,Build}.PL
+
+=over
+
+=item * Makefile.PL: require 5.008
+
+Rule out old perl versions
+
+=item * Build.PL: requires => { perl => 5.008 }
+
+Same thing
+
+=item * Devel-CheckLib
+
+check that a library is available
+
+=item * Devel-CheckOS
+
+check what OS we're running on
+
+=item * Notbremse: exit 0, ohne einen Makefilezu schreiben
+
+=back
+
+=head1 Grades
+
+=over
+
+=item * PASS
+
+distribution built and tested correctly
+
+=item * FAIL
+
+distribution failed to build or test correctly
+
+=item * UNKNOWN
+
+distribution built, but had no test suite or outcome was inconclusive
+
+=item * NA
+
+distribution is not applicable to this platform and/or 
+version of Perl
+
+=item * "invalid"
+
+Not really a grade. Dependency has failed, no report shall be sent
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://cpantest.grango.org/
+
+Das ist das von Barbie aufgesetzte Testers Wiki. Hat nur wenige
+Seiten, aber gute Linksammlung, gute Anleitungen.
+
+=item * http://cpantest.grango.org/wiki/Reports
+
+Die Grades von der letzten Seite erklärt
+
+=item * http://cpantest.grango.org/wiki/CPANAuthorNotes
+
+Eine FAQ für Autoren
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://cpantesters.perl.org/
+
+Die unprätentiöse Sammlung aller Testergebnisse. Beachte die Links am
+Fuß der Seiten auf YAML/JSON/XML Downloads.
+
+=item * http://cpantesters.perl.org/show/Test-Reporter.html
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://bbbike2.radzeit.de/~slaven/cpantestersmatrix.cgi
+
+Eine herrliche tabellarische Aufarbeitung der Rohdaten von
+cpantesters. Matrix, weil die Ergebnisse wenigstens in zwei
+Dimensionen präsentiert werden.
+
+=item * http://bbbike2.radzeit.de/~slaven/cpantestersmatrix.cgi?dist=Safe-World
+
+=item * http://bbbike2.radzeit.de/~slaven/cpantestersmatrix.cgi?dist=B-Generate
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://www.nntp.perl.org/group/perl.cpan.testers/
+
+Hier kommen die Testreports zuerst an. Einmal stündlich werden neue
+Seiten generiert. Solange muß der Autor warten, wenn wir als Tester
+ihm kein CC geschickt haben.
+
+Im Januar wurde der einmillionste Testreport von David Cantrell
+eingeliefert.
+
+  http://www.nntp.perl.org/group/perl.cpan.testers/2008/01/page1.html
+
+  http://www.nntp.perl.org/group/perl.cpan.testers/2008/01/page84.html
+
+  http://use.perl.org/~BinGOs/journal/35550
+
+Bis vor wenigen Tagen eine Mailingliste, jetzt nicht mehr
+subscribierbar.
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://cpandeps.cantrell.org.uk/?module=
+
+Kurz vor der letzten YAPC in Wien hat David Cantrell sich dieses
+Kleinod ausgedaecht. Anhand der META.yml Dateien, die heutzutage bei
+den meisten Distributionen dabei sind, malt er eine Art Dependency
+Graphen und berechnet anhand der aktuellen FAIL Quoten die
+Gesamtwahrscheinlichkeit aus, daß ein Modul mit Erfolg getestet werden
+kann.
+
+=item * http://cpandeps.cantrell.org.uk/?module=Jifty
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://search.cpan.org/
+
+Search hat immer schon sehr gut auf andere Websites verlinkt. So auch
+seit kurzem auf die Testers Matrix und die CPAN Dependencies.
+
+=item * http://search.cpan.org/~sartak/Jifty-0.71129/
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://perl.grango.org/
+
+Hier sammelt Barbie seine Statistiken. Hier ist auch die Hall Of Fame
+der größten Tester aller Zeiten.
+
+
+
+=back
+
+=head1 URLs
+
+=over
+
+=item * http://services.alphaworks.ibm.com/manyeyes/view/SmAgULsOtha6g7GcD5KnL2-
+
+Eine erst vor kurzem von brian d foy und Andy Armstrong für die CPAN
+Testers entdeckte Ressource. Eine Art Stats'R'Us, wo man eigene Daten
+hochladen kann, damit sie dann von einem Java Plugin hübsch dargetellt
+werden.
+
+=back
+
+=head1 Mailing lists
+
+=over
+
+=item * http://www.nntp.perl.org/group/perl.cpan.uploads
+
+Offizielles Announcement steht noch aus. Alternatives pointed out by
+Bingos in http://use.perl.org/~BinGOs/journal/35631
+
+=back
+
+=head1 Mailing lists
+
+=over
+
+=item * http://www.nntp.perl.org/group/perl.cpan.testers.discuss
+
+Wer regelmäßig testet, sollte unbedingt hier subscriben. Traffic ist
+sehr gering.
+
+=back
+
+=head1 Mailing lists
+
+=over
+
+=item * http://www.nntp.perl.org/group/perl.qa/
+
+Test::Harness und TAP (Test Anything Protocol)
+
+=back
+
+=head1 Mailing lists
+
+=over
+
+=item * http://www.nntp.perl.org/group/perl.module-authors/
+
+Alles ums Schreiben von Modulen, häufig auch über richtiges Testen.
+
+=back
+
+=head1 RT
+
+=over
+
+=item * http://rt.cpan.org/
+
+Ich mag RT als Bug Tracking System. Die Fähigkeit, die meisten
+Arbeiten per Email zu erledigen, das REST Interface, die klaren
+URLs,die man leicht nachbauen kann, das alles macht es zu einem guten
+Partner in der täglichen Arbeit.
+
+=item * http://use.perl.org/~LaPerla/journal/35252
+
+Zu Sylvester als Neujahrsgruß entstanden, um einmal herauszufinden,
+wie dieses RT denn eigentlich zu über 30000 Bugreport in nur 6 Jahren
+gekommen ist.
+
+=back
+
+=head1 Hat das jemand getestet?
+
+=over
+
+=item Ja
+
+=back
+
+=head1 Aber hat das auch jemand B<richtig> getestet?
+
+=cut

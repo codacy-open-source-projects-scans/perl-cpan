@@ -1,0 +1,224 @@
+gcpan von gentoo holt sich
+
+
+
+=item * http://rt.cpan.org/Search/Build.html
+
+Hier ist die Suchmaske von RT, die ein wenig gewöhnungsbedürftig ist.
+
+
+MARCEL
+
+
+Dagegen muss man David's view halten, dass das ganz System erst einmal
+nichts als Daten erzeugt und immer noch jede Menge Arbeit bleibt, die
+Daten zu interpretieren. (Fernerkundung)
+
+
+Finde mehr Links zu RT Tickets, etwa fuer random test results.
+Eventuell die .out Datei holen. DONE
+
+Finde Links auf die Matrix, die auf den ersten Blick etwas zeigen.
+
+Finde Links, die bei David Cantrell nett aussehen. Angerwhale?
+
+Modular aufgebaut, Test::Reporter von beiden Seiten verwendet.
+Umsteigen auf HTTP deshalb wahrscheinlich reibungslos moeglich.
+
+Mailing Lists fehlt noch vollstaendig.
+
+Wie alt ist rt.cpan.org nochmal?
+
+Wo habe ich neulich "Profit" geschrieben? Im APC Changes file
+eventuell. Nein. Aber im README.additionaltarballs, den es nun gar
+nich mehr gibt, habe ich es vermutlich geschrieben.
+
+Dave Rolsky
+
+Wie hiess mein erster Lieblingstester, der wirklich kein Entwickler
+war? Der glaube ich vier Kinder hatte?
+
+
+
+
+
+
+
+=done
+
+CPAN::Reporter::Smoker ansehen
+
+OMG, see CPAN::Testers which contains my talk as manpage!
+
+Vielleicht auf die manpage verlinken wegen der Graphik?
+
+Finde das Zitat, wo jemand sagt, was Marc anscheinend denkt. OK,
+perl-qa/9204 on k75. Und?
+
+  From: Andy Armstrong <andy@hexten.net>
+  To: Michael G Schwern <schwern@pobox.com>
+  Date: Wed, 19 Dec 2007 03:30:03 +0000
+  Subject: Re: Auto: Your message 'FAIL IO-AIO-2.51 i386-freebsd-thread-multi 6.2-release' has NOT been received
+
+  I'm locked in correspondence with Marc now.
+
+  His view: cpan-testers are incompetent, ego tripping, quasi-religious  
+  nuisances.
+  My view: approx your view.
+
+  Obviously that's my (probably extremely unprofessional) impression of  
+  his views. He did mention religion and ego though :)
+
+Mehr Raum geben dem Scheitern: das ist eine Menge dran an dem, was
+Marc gesagt hat.
+
+Uebrigens war der thread zwischen marc und slaven am 4.12.2007
+
+   Es ist nicht nur Spam, wenn auch ein gewaltiger  
+   Einschlag von Spam zu beobachten ist.
+
+
+
+
+
+=head1 Success Stories
+
+=head1 IRC Channels
+
+
+
+Jochen Stenzel binary searches success stories, many please.
+chocolateboy mail perhaps (2007-12-26)?
+
+Quite often encountering bad tests like tests that rely on the cookies
+being sent from www.ebay.com.
+
+thinnercache.pl has several important BBC points
+
+PREREQ_FATAL=0
+
+RECENT
+
+CPAN::Reporter 1.00
+
+grango statistik
+
+wiki grades: http://cpantest.grango.org/cgi-bin/pages.cgi?act=wiki-page&pagename=Reports
+
+  PASS
+  FAIL
+  UNKNOWN
+  NA
+
+  but also: "invalid" or in other words "on hold" when a dependency is not fulfilled
+
+IRC cpantesters, cpantesters-discuss, toolchain
+
+  all @irc.perl.org
+
+Nischen 5.005, 64bit, Dobrica talked about some phone toolkit
+
+PITA fehlt auch noch ganz.
+
+
+warnings bei OK waere viel zu finden
+
+Namen David Cantrell, Chris Bingos Williams, Barbie, David Golden, Slaven
+
+Jifty app
+
+RT tickets (queries, frequent bug types, )
+
+megainstall in a random sequence
+
+POE
+
+distroprefs depends
+
+http://bbbike2.radzeit.de/~slaven/cpantestersmatrix.cgi?dist=CPAN
+
+    helps decide what needs testing
+    Interesting for some reason:
+        lots of things todo visible because already much done: B::Generate
+        lots of things todo but tasks not visible: XML::XPathScript
+        tough case because of dependencies failing, so nothing arrives: MojoMojo
+        old module: ???
+
+you need a big disk and ccache installed
+
+watch perl repositorybrowser when testing bleadperl
+
+relocateableinc => mod_perl
+
+threads,nothreads => Net::Daemon, Devel::Caller, Sub::Multi
+
+debugging/nodebugging => Coro, Tcl
+
+zlib tests time consuming
+
+urxvt
+
+=head1 Thoughts by David Golden in <5d4beb40710210830r21df9d32q671c185d01e64183@mail.gmail.com>
+
+The more important words in these paragraphs above are these: "the problem".
+
+"The problem" is not well defined or perceived the same by everyone.
+
+At the core CPAN Testers provides a means to capture the experience of
+users attempting to build and test a module.  As I see it, the root of
+"the problem" is that there are many ways for things to fail, and
+authors tend to object to getting "FAIL" grades (in big capital
+letters) for things outside their control.
+
+Authors complain to CPAN Testers, testers complain to those who write
+CPAN Testers clients about getting complaints for authors.  The
+investment of time and energy to improve CPAN Testers clients is
+weighed against the annoyance of getting complaints.
+
+So, gradually, the more easily determined failure paths have being
+pruned out to just cut down on the noise.  Ones that are easy to
+automate have been -- e.g. prerequisite failures are now just
+discarded (at least by CPAN::Reporter).
+
+Harder failure paths to determine -- such as unsupported operating
+systems -- have been addressed by special key words ("OS Unsupported"
+or "No support for OS") to let authors abort building or testing with
+an NA report.  But apparently that's too hard or too obscure for some
+-- thus Devel::CheckOS.
+
+Confirming a working compiler setup and appropriate libraries is an
+even tougher problem for authors, and the method for signaling it is
+even more obscure.  ("exit 0" before creating a Makefile.)  And thus
+there is Devel::CheckLib.
+
+I'm not interested in spending my time writing an omniscient failure
+detection tool.  I'm not interested in trying to solve "the problem"
+(many ways for things to fail and authors affronted by FAIL reports)
+for all of CPAN.
+
+I'm am willing to invest my time in making it easier for authors to do
+something about being annoyed by FAIL reports from missing libraries.
+And I'm willing to invest my time to have something more constructive
+to say in response to complains. ("You're right that this is a library
+problem -- go use Devel::CheckLib and you won't get these FAIL
+reports").  That is "the problem" that Devel::CheckLib is trying to
+solve.
+
+=head1 Thoughts
+
+We have reached a point where our beloved greatest library of all
+times has degraded to some obscure collection of depressingly hard to
+use LEGO pieces. We need to turn our attention to quality assurance.
+
+=head1 Renee baecker:
+
+Mich würde es am meisten interessieren, wie man möglichst einfach
+CPAN-Tester werden kann, so dass ich ohne groß Mehraufwand
+Test-Resultate verschicken kann. Welche Tipps und Tricks gibt es bei
+der Konfiguration der Module wie Test::Reporter etc.
+Ich habe mich mit dem Thema noch nicht allzu intensiv beschäftigt, von
+daher wäre ich an einem Überblick sehr interessiert!
+
+=head1 RT
+
+http://rt.cpan.org/Search/Build.html?SearchId=new&Query=+id+%3E+32000&Format=%27+++%3Cb%3E%3Ca+href%3D%22%2FTicket%2FDisplay.html%3Fid%3D__id__%22%3E__id__%3C%2Fa%3E%3C%2Fb%3E%2FTITLE%3A%23%27%2C%0D%0A%27%3Cb%3E%3Ca+href%3D%22%2FTicket%2FDisplay.html%3Fid%3D__id__%22%3E__Subject__%3C%2Fa%3E%3C%2Fb%3E%2FTITLE%3ASubject%27%2C%0D%0A%27__Status__%27%2C%0D%0A%27__QueueName__%27%2C%0D%0A%27__OwnerName__%27%2C%0D%0A%27__Priority__%27%2C%0D%0A%27__NEWLINE__%27%2C%0D%0A%27%27%2C%0D%0A%27%3Csmall%3E__Requestors__%3C%2Fsmall%3E%27%2C%0D%0A%27%3Csmall%3E__CreatedRelative__%3C%2Fsmall%3E%27%2C%0D%0A%27%3Csmall%3E__ToldRelative__%3C%2Fsmall%3E%27%2C%0D%0A%27%3Csmall%3E__LastUpdatedRelative__%3C%2Fsmall%3E%27%2C%0D%0A%27%3Csmall%3E__TimeLeft__%3C%2Fsmall%3E%27&AndOr=AND&idOp=%3C&ValueOfid=&AttachmentField=Subject&AttachmentOp=LIKE&ValueOfAttachment=&QueueOp=%3D&ValueOfQueue=&StatusOp=%3D&ValueOfStatus=&ActorField=Owner&ActorOp=%3D&ValueOfActor=&WatcherField=Requestor.EmailAddress&WatcherOp=LIKE&ValueOfWatcher=&DateField=Created&DateOp=%3C&ValueOfDate=&TimeField=TimeWorked&TimeOp=%3C&ValueOfTime=&ValueOfTime-TimeUnits=minutes&PriorityField=Priority&PriorityOp=%3C&ValueOfPriority=&LinksField=HasMember&LinksOp=%3D&ValueOfLinks=&%27CF.%7BSeverity%7D%27Op=LIKE&ValueOf%27CF.%7BSeverity%7D%27=&Owner=RT%3A%3AUser-932&Description=&LoadSavedSearch=&Link=None&Title=&Size=&Face=&OrderBy=id&Order=DESC&OrderBy=&Order=ASC&OrderBy=&Order=ASC&OrderBy=&Order=ASC&RowsPerPage=25&DoSearch=Add+and+Search
