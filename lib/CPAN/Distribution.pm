@@ -9,7 +9,7 @@ use File::Path ();
 use POSIX ":sys_wait_h"; 
 @CPAN::Distribution::ISA = qw(CPAN::InfoObj);
 use vars qw($VERSION);
-$VERSION = "2.34";
+$VERSION = "2.39";
 
 my $run_allow_installing_within_test = 1; # boolean; either in test or in install, there is no third option
 
@@ -2631,9 +2631,13 @@ sub prefs {
             my $filler2 = int(66 - length($bs))/2;
             $filler2 = 0 if $filler2 < 0;
             $filler2 = " " x $filler2;
+            my $pretty = $self->pretty_id;
+            my $filler3 = int(66 - length($pretty))/2;
+            $filler3 = " " x $filler3;
             $CPAN::Frontend->myprint("
 $filler1 D i s t r o P r e f s $filler1
 $filler2 $bs $filler2
+$filler3 $pretty $filler3
 ");
             $CPAN::Frontend->mysleep(1);
             return $self->{prefs};
@@ -3214,9 +3218,9 @@ sub unsat_prereq {
         }
         # here need to flag as optional for recommends/suggests
         # -- xdg, 2012-04-01
-        $self->debug(sprintf "%s manadory?[%s]",
+        $self->debug(sprintf "%s mandatory?[%s]",
                      $self->pretty_id,
-                     $self->{mandatory})
+                     defined($self->{mandatory}) ? $self->{mandatory} : "<undef>")
             if $CPAN::DEBUG;
         my $optional = !$self->{mandatory}
             || $self->is_locally_optional($prereq_pm, $need_module);
@@ -3357,6 +3361,9 @@ sub prereq_pm {
                                           # but we must have run it
         || $self->{modulebuild};
     unless ($self->{build_dir}) {
+        return;
+    }
+    if ($self->{cleanup_after_install_done}) {
         return;
     }
     # no Makefile/Build means configuration aborted, so don't look for prereqs

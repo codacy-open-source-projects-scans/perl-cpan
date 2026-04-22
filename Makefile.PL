@@ -22,7 +22,7 @@ $FINGERPRINT =~ s/ //g;
 
 my $version_diff = 0; # we'll have to die if this becomes true
 my $version_from;
-my $trial = 0;
+my $trial = 1;
 my $version;
 {
   local $^W;
@@ -349,7 +349,7 @@ logs/.exists :
 	touch $@
 
 run :
-	$(PERL) -Ilib -MCPAN -eshell
+	$(PERL) -Irelated/CPAN-Plugin-TraceDeps/lib -Irelated/CPAN-Plugin-TraceMemory/lib -Ilib -MCPAN -eshell
 
 run_testenv_db :
 	$(PERL) -Ilib -It -MCPAN::MyConfig -MCPAN -deshell
