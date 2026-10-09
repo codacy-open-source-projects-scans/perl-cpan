@@ -12,7 +12,7 @@ CPAN::HandleConfig - internal configuration handling for CPAN.pm
 
 =cut 
 
-$VERSION = "5.5013"; # see also CPAN::Config::VERSION at end of file
+$VERSION = "5.5014"; # see also CPAN::Config::VERSION at end of file
 
 %can = (
         commit   => "Commit changes to disk",
@@ -31,6 +31,7 @@ $VERSION = "5.5013"; # see also CPAN::Config::VERSION at end of file
 #     3. add a "matcher" section in CPAN::FirstTime::init that includes
 #        a prompt function; see others for examples
 #     4. add config option to documentation section in CPAN.pm
+#     5. possibly add the new variable to %prefssupport
 
 %keys = map { $_ => undef }
     (
@@ -120,6 +121,7 @@ $VERSION = "5.5013"; # see also CPAN::Config::VERSION at end of file
      "urllist_ping_external",
      "use_prompt_default",
      "use_sqlite",
+     "use_static_install",
      "username",
      "version_timeout",
      "wait_list",
@@ -796,7 +798,7 @@ sub prefs_lookup {
 
     use strict;
     use vars qw($AUTOLOAD $VERSION);
-    $VERSION = "5.5013";
+    $VERSION = "5.5014";
 
     # formerly CPAN::HandleConfig was known as CPAN::Config
     sub AUTOLOAD { ## no critic

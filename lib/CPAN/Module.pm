@@ -7,7 +7,7 @@ use strict;
 use vars qw(
             $VERSION
 );
-$VERSION = "5.5003";
+$VERSION = "5.5004";
 
 BEGIN {
     # alarm() is not implemented in perl 5.6.x and earlier under Windows
@@ -540,7 +540,7 @@ sub uptodate {
         (join
          ("",
           "returning uptodate. ",
-          "cpan[$cpan]inst[$inst]",
+          "mod[$self->{ID}] cpan[$cpan]inst[$inst]",
          )) if $CPAN::DEBUG;
     return 1;
 }

@@ -15,7 +15,7 @@ use vars qw($connect_to_internet_ok $Ua $Thesite $ThesiteURL $Themethod);
 use vars qw(
             $VERSION
 );
-$VERSION = "5.5017";
+$VERSION = "5.5018";
 
 sub _plus_append_open {
     my($fh, $file) = @_;
@@ -367,7 +367,7 @@ sub localize_2021 {
         for my $prx (qw(https_proxy no_proxy)) {
             $ENV{$prx} = $CPAN::Config->{$prx} if $CPAN::Config->{$prx};
         }
-        $base = "https://cpan.org/";
+        $base = "https://www.cpan.org/";
     } else {
         my @missing_modules = grep { ! $CPAN::META->has_usable($_) } qw(HTTP::Tiny Net::SSLeay IO::Socket::SSL);
         my $miss = join ", ", map { "'$_'" } @missing_modules;

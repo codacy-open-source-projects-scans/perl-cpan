@@ -11,7 +11,7 @@ use File::Spec ();
 use CPAN::Mirrors ();
 use CPAN::Version ();
 use vars qw($VERSION $auto_config);
-$VERSION = "5.5318";
+$VERSION = "5.5321";
 
 =head1 NAME
 
@@ -454,8 +454,8 @@ Policy on building prerequisites (follow, ask or ignore)?
 =item pushy_https
 
 Boolean. Defaults to true. If this option is true, the cpan shell will
-use https://cpan.org/ to download stuff from the CPAN. It will fall
-back to http://cpan.org/ if it can't handle https for some reason
+use https://www.cpan.org/ to download stuff from the CPAN. It will fall
+back to http://www.cpan.org/ if it can't handle https for some reason
 (missing modules, missing programs). Whenever it falls back to the
 http protocol, it will issue a warning.
 
@@ -646,6 +646,17 @@ from the CPAN and CPAN.pm that speeds up metadata queries and reduces
 memory consumption of CPAN.pm considerably.
 
 Use CPAN::SQLite if available? (yes/no)?
+
+=item use_static_install
+
+New feature as of CPAN 2.39 (2025-09), per default enabled: the module
+CPAN::Static::Install knows how to install simple modules without
+using either ExtUtils::MakeMaker or Module::Build. Modules that are
+simple enough to be installed by CPAN::Static::Install declare that
+with the attribute x_static_install in their META.yml or META.json
+file.
+
+Use CPAN::Static::Install if available? (yes/no)?
 
 =item version_timeout
 
@@ -1101,6 +1112,11 @@ sub init {
 
     }
 
+    #
+    #== use_static_install
+    #
+    my_yn_prompt(use_static_install => 1, $matcher);
+
     require CPAN::HandleConfig;
     if (exists $CPAN::HandleConfig::keys{make_install_make_command}) {
         # as long as Windows needs $self->_build_command, we cannot
@@ -1356,7 +1372,7 @@ sub init {
         }
         else {
             # Hint: as of 2021-11: to get http, use http://www.cpan.org/
-            $CPAN::Config->{urllist} = [ 'https://cpan.org/' ];
+            $CPAN::Config->{urllist} = [ 'https://www.cpan.org/' ];
             $CPAN::Frontend->myprint(
                 "We initialized your 'urllist' to @{$CPAN::Config->{urllist}}. Type 'o conf init urllist' to change it.\n"
             );

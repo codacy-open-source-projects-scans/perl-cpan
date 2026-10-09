@@ -1,3 +1,35 @@
+2026-10-05  Andreas Koenig  <andk@cpan.org>
+
+	* release 2.42-TRIAL
+
+	* introduce support for CPAN::Static::Install
+
+2026-09-12  k  <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+
+	* release 2.41
+
+	* unchanged from 2.41-TRIAL
+
+2026-09-06  k  <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+
+	* release 2.41-TRIAL
+
+	* Save on the 301 redirect to www.cpan.org (Kudos to Sevan Janiyan)
+
+	* increase timeout in test script
+
+2026-05-24  k  <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+
+	* release 2.40-TRIAL
+
+	* fix some internal section links (Thanks to grinnz)
+
+	* suppress warnings in VERSION discovery (Thanks to brian d foy)
+
+	* fix perl version check in Makefile.PL (Thanks to Lukas Mai)
+
+	* adjust distroprefs file thanks to an intervention by mauke
+
 2026-04-21  k  <andreas.koenig.7os6VVqR@franz.ak.mind.de>
 
 	* release 2.39-TRIAL
